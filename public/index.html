@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Zillow Exercise</title>
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular-animate/angular-animate.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/directives/currencyChange.js"></script>
+        <script src="js/controllers/IndexController.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/app.css"/>
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+    </head>
+    <body ng-app="zillow-exercise" ng-controller="IndexController">
+        <div id="header">
+            <div id="header-main">
+                <div id="title">
+                    <h1>GetSearchResults Exercise</h1>
+                </div>
+                <form name="addressForm" id="addressForm">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="address">Address</label>
+                            </td>
+                            <td>
+                                <input id="address" name="address" ng-model="address" type="text" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="cityStateZip">City, State OR Zip</label>
+                            </td>
+                            <td>
+                                <input id="cityStateZip" name="cityStateZip" ng-model="cityStateZip" type="text" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="zestimate">Rent Zestimate</label>
+                            </td>
+                            <td style="text-align:left;">
+                                <input id="zestimate" ng-model="rentzestimate" type="checkbox">
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" ng-disabled="addressForm.$invalid" ng-click="submitClicked()" value="Search"/>
+                </form>
+            </div>
+            <div id="author">by Ken Kohlmann</div>
+        </div>
+        <div>
+            <div ng-if="error" id="errorMessage" class="fade">
+                <i class="fa fa-times-circle-o"></i>
+                <div>{{errorMsg}}. Please try again.</div>
+            </div>
+            <div ng-if="loading" id="loading" class="fade">
+                <i class="fa fa-cog fa-spin"></i>
+            </div>
+            <div ng-if="firstTime" id="firstTime" class="fade">
+                <span>Please specify an Address and a Zip code or an Address and a City/State. Press the 'Search' button and your results will appear here.</span>
+            </div>
+            <!--OUTPUT BELOW-->
+            <div id="results" ng-if="!error && !loading && !firstTime" class="fade">
+                <div class="result-section">
+                    <i class="fa fa-map"></i>
+                    <h3>Address</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Street</b>
+                            </td>
+                            <td>
+                                {{results.address[0].street[0]}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>ZIP Code</b>
+                            </td>
+                            <td>
+                                {{results.address[0].zipcode[0]}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>City</b>
+                            </td>
+                            <td>
+                                {{results.address[0].city[0]}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>State</b>
+                            </td>
+                            <td>
+                                {{results.address[0].state[0]}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Latitude</b>
+                            </td>
+                            <td>
+                                {{results.address[0].latitude[0]}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Longitude</b>
+                            </td>
+                            <td>
+                                {{results.address[0].longitude[0]}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="result-section">
+                    <i class="fa fa-external-link"></i>
+                    <h3>Links</h3>
+                    <div>
+                        <a href="{{results.links[0].homedetails[0]}}">Home Details</a>
+                    </div>
+                    <div>
+                        <a href="{{results.links[0].graphsanddata[0]}}">Graphs & Data</a>
+                    </div>
+                    <div>
+                        <a href="{{results.links[0].mapthishome[0]}}">Map this home</a>
+                    </div>
+                    <div>
+                        <a href="{{results.links[0].comparables[0]}}">Comparables</a>
+                    </div>
+                </div>
+                <div class="result-section">
+                    <i class="fa fa-money"></i>
+                    <h3>Zestimate</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Amount</b>
+                            </td>
+                            <td>
+                                {{results.zestimate[0].amount[0]._ | currency}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Value Change</b>
+                            </td>
+                            <td>
+                                <currency-change delta="results.zestimate[0].valueChange[0]._" duration="results.zestimate[0].valueChange[0].$.duration"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Valuation Range</b>
+                            </td>
+                            <td>
+                                {{results.zestimate[0].valuationRange[0].low[0]._ | currency}} - {{results.zestimate[0].valuationRange[0].high[0]._ | currency}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="result-section" ng-if="results.rentzestimate">
+                    <i class="fa fa-home"></i>
+                    <h3>Rent Zestimate</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Amount</b>
+                            </td>
+                            <td>
+                                {{results.rentzestimate[0].amount[0]._ | currency}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Value Change</b>
+                            </td>
+                            <td>
+                                <currency-change delta="results.rentzestimate[0].valueChange[0]._" duration="results.rentzestimate[0].valueChange[0].$.duration"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Valuation Range</b>
+                            </td>
+                            <td>
+                                {{results.rentzestimate[0].valuationRange[0].low[0]._ | currency}} - {{results.rentzestimate[0].valuationRange[0].high[0]._ | currency}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="result-section">
+                    <i class="fa fa-location-arrow"></i>
+                    <h3>Local Real Estate</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Region Name</b>
+                            </td>
+                            <td>
+                                {{results.localRealEstate[0].region[0].$.name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Region Type</b>
+                            </td>
+                            <td>
+                                {{results.localRealEstate[0].region[0].$.type}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Links</b>
+                            </td>
+                            <td>
+                                <a href="{{results.localRealEstate[0].region[0].links[0].overview[0]}}">Overview</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                <a href="{{results.localRealEstate[0].region[0].links[0].overview[0]}}">For Sale by Owner</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                <a href="{{results.localRealEstate[0].region[0].links[0].overview[0]}}">For Sale</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

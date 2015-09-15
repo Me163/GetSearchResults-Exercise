@@ -1,0 +1,21 @@
+{
+  "name": "zillow-exercise",
+  "version": "1.0.0",
+  "description": "A prototype for using the GetSearchResults API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+	"postinstall":"bower install"
+  },
+  "keywords": [
+    "zillow",
+    "exercise"
+  ],
+  "dependencies": {
+    "express": "^4.13.3",
+    "request": "^2.61.0",
+    "xml2js": "^0.4.12"
+  },
+  "author": "Ken Kohlmann",
+  "license": "ISC"
+}
