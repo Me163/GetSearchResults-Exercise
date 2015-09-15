@@ -13,10 +13,22 @@ html {
     height:100%;
 }
 
+#header
+{
+    position: relative;
+    background: url(http://thejetlife.com/wp-content/uploads/2013/03/3-Kapalua-Place-maui-beach-house-3.jpg) no-repeat center -270px;
+    background-size:cover;
+    background-attachment:fixed;
+    text-align: center;
+    height: 530px;
+    color:white;
+}
+
 #header-main {
     position: relative;
     top: 50%;
-    transform: translateY(-65%);
+    transform: translateY(-55%);
+    -webkit-transform: translateY(-55%);
 }
 
 #errorMessage {
@@ -127,17 +139,6 @@ html {
 
 #addressForm input[type="submit"]:hover {
     background: -webkit-linear-gradient(top, rgb(116, 192, 5), rgb(93, 153, 0));
-}
-
-#header
-{
-    position: relative;
-    background: url(http://thejetlife.com/wp-content/uploads/2013/03/3-Kapalua-Place-maui-beach-house-3.jpg) no-repeat center -270px;
-    background-size:cover;
-    background-attachment:fixed;
-    text-align: center;
-    height: 450px;
-    color:white;
 }
 
 div#results {

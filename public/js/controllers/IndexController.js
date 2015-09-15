@@ -10,8 +10,6 @@ angular.module('zillow-exercise').controller('IndexController', ['$scope','$http
     $scope.firstTime = true;
     $scope.errorMsg = "";
 
-    $scope.address="9272 Irongate Ln";
-    $scope.cityStateZip="92126";
     $scope.rentzestimate=true;
 
     $scope.submitClicked = function() {
