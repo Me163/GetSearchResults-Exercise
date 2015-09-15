@@ -3,6 +3,7 @@
  */
 var express = require('./config/express');
 var app = express();
-app.listen(80);
+var port = process.env.PORT || 3000;
+app.listen(port);
 module.exports = app;
-console.log('Server running at http://localhost:80/');
+console.log('Server running at http://localhost:'+port);
